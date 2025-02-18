@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +44,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors((corsCustomizer -> corsCustomizer.configurationSource(request -> {
+
+                    CorsConfiguration configuration = new CorsConfiguration();
+
+                    // 허용할 출처 설정 (React 앱의 주소)
+                    configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                    // 모든 HTTP 메서드 허용
+                    configuration.setAllowedMethods(Collections.singletonList("*"));
+                    // 인증 정보 (쿠키 등) 허용
+                    configuration.setAllowCredentials(true);
+                    // 모든 헤더 허용
+                    configuration.setAllowedHeaders(Collections.singletonList("*"));
+                    // pre-flight 요청 결과를 1시간 동안 캐시(pre-flight: 실제 요청 전에 브라우저가 보내는 OPTIONS 요청.)
+                    configuration.setMaxAge(3600L);
+                    // 클라이언트에서 접근 가능한 헤더 설정
+                    configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                    return configuration;
+                })))
                 // CSRF(Cross-Site Request Forgery) 보호 기능 비활성.
                 .csrf(AbstractHttpConfigurer::disable)
                 // X-Frame-Options 헤더 설정: H2 콘솔 접근을 위해 SAMEORIGIN으로 설정
