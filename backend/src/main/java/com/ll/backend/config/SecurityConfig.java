@@ -81,6 +81,8 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/", "/join", "/h2-console/**").permitAll()
                         // 관리자 페이지는 ADMIN 역할을 가진 사용자만 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        // Refresh 토큰으로 Access 토큰을 재발급 하기 위한 경로는 모든 사용자에게 허용
+                        .requestMatchers("/reissue").permitAll()
                         // 그 외 모든 요청은 인증된 사용자만 접근 가능
                         .anyRequest().authenticated()
                 )

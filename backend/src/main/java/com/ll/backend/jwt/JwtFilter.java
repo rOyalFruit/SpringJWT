@@ -43,7 +43,6 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             jwtUtil.isExpired(accessToken);
         } catch (ExpiredJwtException e) {
-
             // response body
             PrintWriter writer = response.getWriter();
             writer.print("access token expired");
@@ -53,6 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
             // 프론트측 Axios Interceptor와 같은 예외 핸들러에서 Access 토큰 재발급을 위한 Refresh을 서버측으로 전송.
             // 이때 서버에서는 Refresh 토큰을 받아 새로운 Access 토큰을 응답하는 코드를 작성하면 됨.
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
             return;
         }
 
