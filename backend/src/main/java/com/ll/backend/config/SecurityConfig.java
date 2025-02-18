@@ -1,5 +1,6 @@
 package com.ll.backend.config;
 
+import com.ll.backend.jwt.CustomLogoutFilter;
 import com.ll.backend.jwt.JwtFilter;
 import com.ll.backend.jwt.JwtUtil;
 import com.ll.backend.jwt.LoginFilter;
@@ -16,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -77,6 +79,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 // HTTP Basic 인증 비활성화: JWT를 사용하므로 Basic 인증은 사용하지 않음
                 .httpBasic(AbstractHttpConfigurer::disable)
+                // 기본 로그아웃 필터 비활성화
+                .logout(AbstractHttpConfigurer::disable)
                 // URL별 접근 권한 설정
                 .authorizeHttpRequests(auth -> auth
                         // 로그인, 홈, 회원가입 페이지, h2-console은 모든 사용자에게 허용
@@ -92,6 +96,8 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class)
                 // 커스텀 로그인 필터. 기본 로그인 필터와 같은 위치에 추가.
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class)
+                // 커스텀 로그아웃 필터.
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
                 // 세션 관리 설정: JWT를 사용하므로 세션을 생성하지 않음 (STATELESS)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
