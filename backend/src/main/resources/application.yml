@@ -12,3 +12,12 @@ spring:
     driverClassName: org.h2.Driver    # H2 데이터베이스 드라이버 클래스를 지정.
     username: sa                      # 데이터베이스 접속 사용자 이름 설정.
     password:                         # 데이터베이스 접속 비밀번호 설정.
+
+  jpa:
+    hibernate:
+      ddl-auto: update                            # 데이터베이스 스키마 자동 생성 전략을 'update'로 설정. 기존 테이블은 유지하고 변경사항만 적용함.
+    properties:
+      hibernate:
+        show_sql: true                            # SQL 쿼리를 콘솔에 출력.
+        format_sql: true                          # 출력되는 SQL 쿼리를 보기 좋게 포맷팅.
+        dialect: org.hibernate.dialect.H2Dialect  # H2 데이터베이스에 맞는 Hibernate 방언(Dialect)을 설정.
