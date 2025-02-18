@@ -1,6 +1,5 @@
 package com.ll.backend.jwt;
 
-import com.ll.backend.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
