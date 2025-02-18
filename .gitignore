@@ -360,8 +360,13 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+# End of https://www.toptal.com/developers/gitignore/api/java,react,node,git,intellij,gradle,windows
+
 ### Custom ###
 .idea
 ./frontend/.idea
 ./backend/.idea
-# End of https://www.toptal.com/developers/gitignore/api/java,react,node,git,intellij,gradle,windows
+db_dev.mv.db
+.qodo
+
+.qodo
