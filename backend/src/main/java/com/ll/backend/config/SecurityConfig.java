@@ -24,10 +24,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF 설정: H2 콘솔에 대해서는 CSRF 보호를 비활성화.
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-                )
+                // CSRF(Cross-Site Request Forgery) 보호 기능 비활성.
+                .csrf(AbstractHttpConfigurer::disable)
                 // X-Frame-Options 헤더 설정: H2 콘솔 접근을 위해 SAMEORIGIN으로 설정
                 .headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
