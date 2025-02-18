@@ -1,5 +1,6 @@
 package com.ll.backend.config;
 
+import com.ll.backend.jwt.JwtUtil;
 import com.ll.backend.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,7 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtUtil jwtUtil;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -60,7 +62,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 // 커스텀 로그인 필터. 기본 로그인 필터와 같은 위치에 추가.
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 // 세션 관리 설정: JWT를 사용하므로 세션을 생성하지 않음 (STATELESS)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
