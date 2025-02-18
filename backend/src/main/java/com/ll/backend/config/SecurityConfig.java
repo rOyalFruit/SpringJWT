@@ -1,5 +1,6 @@
 package com.ll.backend.config;
 
+import com.ll.backend.jwt.JwtFilter;
 import com.ll.backend.jwt.JwtUtil;
 import com.ll.backend.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,8 @@ public class SecurityConfig {
                         // 그 외 모든 요청은 인증된 사용자만 접근 가능
                         .anyRequest().authenticated()
                 )
+                //JWTFilter 등록
+                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class)
                 // 커스텀 로그인 필터. 기본 로그인 필터와 같은 위치에 추가.
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 // 세션 관리 설정: JWT를 사용하므로 세션을 생성하지 않음 (STATELESS)

@@ -368,5 +368,3 @@ gradle-app.setting
 ./backend/.idea
 db_dev.mv.db
 .qodo
-
-.qodo
